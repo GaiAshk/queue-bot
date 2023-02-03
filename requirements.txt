@@ -1,0 +1,7 @@
+requests
+slack-sdk
+pydantic
+sqlalchemy
+PyMySQL==0.10.0
+alembic==1.9.2
+boto3==1.26.54

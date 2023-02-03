@@ -1,0 +1,32 @@
+stages:
+  - deploy-dev
+
+
+.install-serverless-through-npm: &install-serverless-through-npm
+  - npm install -d serverless@3
+
+check-standards-branches:
+  stage: .pre
+  only:
+    - chat
+
+variables:
+  AWS_ACCOUNT_ID: '11111111111'
+  AWS_REGION: 'us-east-1'
+  STAGE: dev
+  ENVIRONMENT: dev
+  TEAM: slack-1
+  RUNNER_TAG_DEV: docker-compose-global-runner
+
+
+deploy_sls:
+  stage: deploy-dev
+  extends:
+    - .deploy-to-aws-env
+    - .deploy-dev
+  rules:
+    - when: manual
+  script:
+    - npm install -d serverless@3
+    - pip install alembic sqlalchemy PyMySQL
+    - npx serverless deploy --stage $STAGE --region $AWS_REGION

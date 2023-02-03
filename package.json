@@ -1,0 +1,20 @@
+{
+  "name": "q-slackbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:GaiAshk/queue-bot.git"
+  },
+  "author": "Gai Ashkenazy",
+  "license": "MIT",
+  "dependencies": {
+    "serverless": "^3.26.0",
+    "serverless-alembic-migration-plugin": "^1.3.13",
+    "serverless-python-requirements": "^6.0.0"
+  }
+}

@@ -1,0 +1,59 @@
+service: q-slackbot
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  lambdaHashingVersion: "20201221"
+  vpc:
+    securityGroupIds:
+      - sg-00000000000000000
+    subnetIds:
+      - subnet-00000000000000000
+      - subnet-00000000000000001
+      - subnet-00000000000000002
+
+  environment:
+    STAGE: dev
+    MYSQL_HOST: mysql-eu-central-1.dev.q-slack.com
+    MYSQL_PASSWORD: pass
+    MYSQL_DB_NAME: qq
+    MYSQL_USER: via
+    SLACK_APP_TOKEN: token
+    SLACK_BOT_TOKEN: token
+    SLACK_SIGNING_SECRET: secret
+
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "kms:Decrypt"
+      Resource: "arn:aws:kms:eu-central-1"
+
+# you can add packaging information here
+package:
+  exclude:
+    - node_modules/**
+
+
+functions:
+  hello:
+    handler: handler.lambda_handler
+    url: true
+
+plugins:
+  - serverless-python-requirements
+  - serverless-alembic-migration-plugin
+
+
+custom:
+  pythonRequirements:
+    pythonBin: python3
+  alembic:
+    driver: 'mysql+pymysql'
+    user: ${self:provider.environment.MYSQL_USER}
+    url: ${self:provider.environment.MYSQL_HOST}
+    schema: qq
+    encrypted_password: ${self:provider.environment.MYSQL_PASSWORD}
+    create_schema: true
+    trigger_in_deploy: true
